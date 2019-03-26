@@ -126,24 +126,11 @@ void ads1118_task(void *p_arg)				//任务函数
 	//	printf(" The  Value is 0X%08x ,%08d\r\n",ConversionValue,ConversionValue);
 		ad=	(float)ConversionValue*4.096/32768;
 		printf("AD=%fV\r\n",ad);
-		stkCheck_task(&ADS1118TaskTCB, p_arg, "ADS1118");
+//		stkCheck_task(&ADS1118TaskTCB, p_arg, "ADS1118");
 		OSTimeDlyHMSM(0,0,0,500,OS_OPT_TIME_HMSM_STRICT,&err); 
 	}
 }
 
-void stkCheck_task(OS_TCB *p_tcb,void *p_arg, char *title_str)				//计算堆栈任务函数
-{
-	OS_ERR err;
-	CPU_STK_SIZE free;
-	CPU_STK_SIZE used;
-	
-	p_arg = p_arg;
-
-	OSTaskStkChk(p_tcb,&free,&used,&err);
-	
-	printf("%s:tcb_free:%d\ttcb_use:%d\r\n",title_str, free, used);
-
-}
 
 
 

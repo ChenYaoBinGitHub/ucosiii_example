@@ -123,9 +123,9 @@ void uart_init(u32 bound){
 	USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;//无硬件数据流控制
 	USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;	//收发模式
 
-    USART_Init(USART1, &USART_InitStructure); //初始化串口
-    USART_ITConfig(USART1, USART_IT_RXNE, ENABLE);//开启中断
-    USART_Cmd(USART1, ENABLE);                    //使能串口 
+    USART_Init(USART1, &USART_InitStructure); 		//初始化串口
+    USART_ITConfig(USART1, USART_IT_RXNE, ENABLE);	//开启中断
+    USART_Cmd(USART1, ENABLE);                    	//使能串口 
 
 }
 
@@ -144,7 +144,8 @@ void USART1_IRQHandler(void)                	//串口1中断服务程序
 			if(USART_RX_STA&0x4000)//接收到了0x0d
 				{
 				if(Res!=0x0a)USART_RX_STA=0;//接收错误,重新开始
-				else USART_RX_STA|=0x8000;	//接收完成了 
+				else USART_RX_STA|=0x8000;	//接收完成了
+				printf("ok\r\n");	
 				}
 			else //还没收到0X0D
 				{	
@@ -163,4 +164,28 @@ void USART1_IRQHandler(void)                	//串口1中断服务程序
 #endif
 } 
 #endif	
+
+int Usart_ReceiveMsg(USART_TypeDef* USARTx)
+{
+	u8 i = 0;
+	u8 len = 0;
+	
+	if(USART_RX_STA & 0x8000)
+	{
+		len = strlen( (char *)USART_RX_BUF);
+		for(i=0; i<len; i++)
+		{
+			while (USART_GetFlagStatus(USART1, USART_FLAG_TC) == RESET) {}	
+			USART_SendData(USARTx,USART_RX_BUF[i]);
+		}
+		USART_RX_STA = 0;
+		printf("\r\n");
+	}
+	return 0;
+}
+
+
+
+
+
 

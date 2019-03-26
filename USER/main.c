@@ -1,9 +1,6 @@
-#include "led.h"
-#include "delay.h"
-#include "sys.h"
-#include "usart.h"
-#include "includes.h"
+#include "task.h"
 
+#include "led.h"
 #include "ADS1118.h"
 
 #define START_TASK_PRIO		3				//任务优先级
@@ -12,18 +9,6 @@ OS_TCB StartTaskTCB;						//任务控制块
 CPU_STK START_TASK_STK[START_STK_SIZE];		//任务堆栈	
 void start_task(void *p_arg);				//任务函数
 
-#define LED0_TASK_PRIO		4				//任务优先级
-#define LED0_STK_SIZE 		80				//任务堆栈大小	
-OS_TCB Led0TaskTCB;							//任务控制块
-CPU_STK LED0_TASK_STK[LED0_STK_SIZE];		//任务堆栈	
-void led0_task(void *p_arg);				//任务函数
-
-
-#define FLOAT_TASK_PRIO		5						//任务优先级
-#define FLOAT_STK_SIZE		128						//任务堆栈大小
-OS_TCB	FloatTaskTCB;								//任务控制块
-__align(8) CPU_STK	FLOAT_TASK_STK[FLOAT_STK_SIZE];	//任务堆栈(8字节对齐)
-void float_task(void *p_arg);						//任务函数
 
 /////////////////////////////////////////
 int main(void)
@@ -126,40 +111,25 @@ void start_task(void *p_arg)
                  (void   	* )0,				
                  (OS_OPT      )OS_OPT_TASK_STK_CHK|OS_OPT_TASK_STK_CLR, 
                  (OS_ERR 	* )&err);				 
-				 
+
+	//创建挂起与恢复任务
+	OSTaskCreate((OS_TCB 	* )&SuspendResumeTaskTCB,		
+				 (CPU_CHAR	* )"SuspendResume task", 		
+                 (OS_TASK_PTR )SuspendResume_task, 			
+                 (void		* )0,					
+                 (OS_PRIO	  )SuspendResume_TASK_PRIO,     	
+                 (CPU_STK   * )&SuspendResume_TASK_STK[0],	
+                 (CPU_STK_SIZE)SuspendResume_STK_SIZE/10,	
+                 (CPU_STK_SIZE)SuspendResume_STK_SIZE,		
+                 (OS_MSG_QTY  )0,					
+                 (OS_TICK	  )0,					
+                 (void   	* )0,				
+                 (OS_OPT      )OS_OPT_TASK_STK_CHK|OS_OPT_TASK_STK_CLR, 
+                 (OS_ERR 	* )&err);				 
 	OS_TaskSuspend((OS_TCB*)&StartTaskTCB,&err);		//挂起开始任务			 
 	OS_CRITICAL_EXIT();	//进入临界区
 }
 
-//led0任务函数
-void led0_task(void *p_arg)
-{
-	OS_ERR err;
-	p_arg = p_arg;
-	while(1)
-	{
-		LED0=0;
-		printf("LED0_TESK\r\n");
-		OSTimeDlyHMSM(0,0,0,200,OS_OPT_TIME_HMSM_STRICT,&err); //延时200ms
-		LED0=1;
-		OSTimeDlyHMSM(0,0,0,500,OS_OPT_TIME_HMSM_STRICT,&err); //延时500ms
-		stkCheck_task(&Led0TaskTCB, p_arg, "led0");
-	}
-}
 
-//浮点测试任务
-void float_task(void *p_arg)
-{
-	CPU_SR_ALLOC();
-	static float float_num=0.01;
-	
-	while(1)
-	{
-		float_num+=0.01f;
-		OS_CRITICAL_ENTER();	//进入临界区
-		printf("float_num的值为: %.4f\r\n",float_num);
-		OS_CRITICAL_EXIT();		//退出临界区
-		delay_ms(1000);			//延时500ms
-		stkCheck_task(&FloatTaskTCB, p_arg, "float");
-	}
-}
+
+

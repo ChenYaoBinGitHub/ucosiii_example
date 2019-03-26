@@ -412,6 +412,11 @@
               <FileType>1</FileType>
               <FilePath>..\HARDWARE\LED\ADS1118.c</FilePath>
             </File>
+            <File>
+              <FileName>task.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HARDWARE\LED\task.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
