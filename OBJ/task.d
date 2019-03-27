@@ -41,3 +41,4 @@
 ..\obj\task.o: ..\SYSTEM\sys\sys.h
 ..\obj\task.o: ..\SYSTEM\usart\usart.h
 ..\obj\task.o: ..\HARDWARE\LED\led.h
+..\obj\task.o: ..\HARDWARE\LED\adc.h

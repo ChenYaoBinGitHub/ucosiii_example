@@ -1,6 +1,7 @@
 #include "task.h"
 
 #include "led.h"
+#include "adc.h"
 
 //检测任务的堆栈使用情况
 void stkCheck_task(OS_TCB *p_tcb,void *p_arg, char *title_str)				//计算堆栈任务函数

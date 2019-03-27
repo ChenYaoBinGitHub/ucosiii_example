@@ -21,6 +21,7 @@ int main(void)
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2); //中断分组配置
 	uart_init(115200);    	//串口波特率设置
 	GPIO_ADS_Init();		//ADS1118 引脚配置
+	Adc_Init();		  		//ADC初始化
 	LED_Init();         	//LED初始化
 	
 	OSInit(&err);		//初始化UCOSIII
