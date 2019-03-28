@@ -1,8 +1,7 @@
  #include "adc.h"
  #include "delay.h"
- 
  #include "stm32f10x_adc.h"
-	   	   
+ 
 //初始化ADC
 //这里我们仅以规则通道为例
 //我们默认将开启通道0~3																	   
@@ -23,23 +22,23 @@ void  Adc_Init(void)
 
 	ADC_DeInit(ADC1);  //复位ADC1 
 
-	ADC_InitStructure.ADC_Mode = ADC_Mode_RegInjecSimult;	//ADC工作模式,规则通道模式
+	ADC_InitStructure.ADC_Mode = ADC_Mode_Independent;	//ADC工作模式,规则通道模式
 	ADC_InitStructure.ADC_ScanConvMode = ENABLE;			//多通道
 	ADC_InitStructure.ADC_ContinuousConvMode = DISABLE ;	//是否支持多通道转化
 	ADC_InitStructure.ADC_ExternalTrigConv = ADC_ExternalTrigConv_None;	//转换由软件而不是外部触发启动
 	ADC_InitStructure.ADC_DataAlign = ADC_DataAlign_Right;	//ADC数据右对齐,也就是对低12位数据为有效数据
-	ADC_InitStructure.ADC_NbrOfChannel = 3;	//顺序进行规则转换的ADC通道的数目
+	ADC_InitStructure.ADC_NbrOfChannel = 1;	//顺序进行规则转换的ADC通道的数目
 	ADC_Init(ADC1, &ADC_InitStructure);		//根据ADC_InitStruct中指定的参数初始化外设ADCx的寄存器   
 
   
     //设置指定ADC的规则组通道，一个序列，采样时间
-	ADC_RegularChannelConfig(ADC1, ADC_Channel_10, 1, ADC_SampleTime_239Cycles5 );	//ADC1,ADC通道,采样时间为239.5周期	  			    
-	ADC_RegularChannelConfig(ADC1, ADC_Channel_11, 2, ADC_SampleTime_239Cycles5 );	//ADC1,ADC通道,采样时间为239.5周期	  			    
+//	ADC_RegularChannelConfig(ADC1, ADC_Channel_10, 1, ADC_SampleTime_55Cycles5 );	//ADC1,ADC通道,采样时间为239.5周期	  			    
+//	ADC_RegularChannelConfig(ADC1, ADC_Channel_11, 2, ADC_SampleTime_55Cycles5 );	//ADC1,ADC通道,采样时间为239.5周期	  			    
 //	ADC_RegularChannelConfig(ADC1, ADC_Channel_10, 1, ADC_SampleTime_239Cycles5 );	//ADC1,ADC通道,采样时间为239.5周期	  			    
 
-	/*配置短序列为1，也就是说每触发一次转换一条通道*/
-	ADC_DiscModeChannelCountConfig(ADC1, 1);	//设置间断模式（规则通道组短序列数）
-	ADC_DiscModeCmd(ADC1, ENABLE);
+//	/*配置短序列为1，也就是说每触发一次转换一条通道*/
+//	ADC_DiscModeChannelCountConfig(ADC1, 1);	//设置间断模式（规则通道组短序列数）
+//	ADC_DiscModeCmd(ADC1, ENABLE);
 	
 	ADC_Cmd(ADC1, ENABLE);	//使能指定的ADC1
 	
@@ -59,8 +58,7 @@ void  Adc_Init(void)
 u16 Get_Adc(u8 ch)   
 {
 //  	//设置指定ADC的规则组通道，一个序列，采样时间
-//	ADC_RegularChannelConfig(ADC1, ch, 1, ADC_SampleTime_239Cycles5 );	//ADC1,ADC通道,采样时间为239.5周期	  			    
-  
+	ADC_RegularChannelConfig(ADC1, ch, 1, ADC_SampleTime_55Cycles5 );	//ADC1,ADC通道,采样时间为239.5周期	  			    
 	ADC_SoftwareStartConvCmd(ADC1, ENABLE);		//使能指定的ADC1的软件转换启动功能		 
 	while(!ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC ));//等待转换结束
 
@@ -74,32 +72,10 @@ u16 Get_Adc_Average(u8 ch,u8 times)
 	for(t=0;t<times;t++)
 	{
 		temp_val+=Get_Adc(ch);
-		delay_ms(5);
+		delay_ms(3);
 	}
 	return temp_val/times;
 } 	 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

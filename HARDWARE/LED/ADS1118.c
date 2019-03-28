@@ -125,7 +125,7 @@ void ads1118_task(void *p_arg)				//ÈÎÎñº¯Êý
 		
 	//	printf(" The  Value is 0X%08x ,%08d\r\n",ConversionValue,ConversionValue);
 		ad=	(float)ConversionValue*4.096/32768;
-		printf("AD=%fV\r\n",ad);
+//		printf("AD=%fV\r\n",ad);
 //		stkCheck_task(&ADS1118TaskTCB, p_arg, "ADS1118");
 		OSTimeDlyHMSM(0,0,0,500,OS_OPT_TIME_HMSM_STRICT,&err); 
 	}

@@ -41,4 +41,5 @@
 ..\obj\main.o: ..\SYSTEM\sys\sys.h
 ..\obj\main.o: ..\SYSTEM\usart\usart.h
 ..\obj\main.o: ..\HARDWARE\LED\led.h
+..\obj\main.o: ..\HARDWARE\LED\adc.h
 ..\obj\main.o: ..\HARDWARE\LED\ADS1118.h

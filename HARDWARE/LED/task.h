@@ -24,8 +24,14 @@ void float_task(void *p_arg);						//任务函数
 #define SuspendResume_TASK_PRIO		7						//任务优先级
 #define SuspendResume_STK_SIZE		128						//任务堆栈大小
 extern OS_TCB	SuspendResumeTaskTCB;								//任务控制块
-extern CPU_STK	SuspendResume_TASK_STK[FLOAT_STK_SIZE];	//任务堆栈(8字节对齐)
+extern __align(8) CPU_STK	SuspendResume_TASK_STK[FLOAT_STK_SIZE];	//任务堆栈(8字节对齐)
 void SuspendResume_task(void *p_arg);						//任务函数
+
+#define ADC_TASK_PRIO		8						//任务优先级
+#define ADC_STK_SIZE		128						//任务堆栈大小
+extern OS_TCB	ADCTaskTCB;								//任务控制块
+extern CPU_STK	ADC_TASK_STK[ADC_STK_SIZE];	//任务堆栈(8字节对齐)
+void Adc_task(void *p_arg);	
 
 void stkCheck_task(OS_TCB *p_tcb,void *p_arg, char *title_str);//检测任务的堆栈使用情况
 

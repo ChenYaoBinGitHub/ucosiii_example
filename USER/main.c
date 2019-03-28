@@ -1,6 +1,7 @@
 #include "task.h"
 
 #include "led.h"
+#include "adc.h"
 #include "ADS1118.h"
 
 #define START_TASK_PRIO		3				//任务优先级
@@ -23,7 +24,7 @@ int main(void)
 	GPIO_ADS_Init();		//ADS1118 引脚配置
 	Adc_Init();		  		//ADC初始化
 	LED_Init();         	//LED初始化
-	
+	printf("progame ok\r\n");
 	OSInit(&err);		//初始化UCOSIII
 	OS_CRITICAL_ENTER();//进入临界区
 	//创建开始任务
@@ -42,7 +43,11 @@ int main(void)
                  (OS_ERR 	* )&err);				//存放该函数错误时的返回值
 	OS_CRITICAL_EXIT();	//退出临界区	 
 	OSStart(&err);  	//开启UCOSIII
-	while(1);
+	while(1)
+	{
+//		adcval = Get_Adc_Average(ADC_Channel_10, 10);
+
+	}
 
 }
 
@@ -126,7 +131,23 @@ void start_task(void *p_arg)
                  (OS_TICK	  )0,					
                  (void   	* )0,				
                  (OS_OPT      )OS_OPT_TASK_STK_CHK|OS_OPT_TASK_STK_CLR, 
-                 (OS_ERR 	* )&err);				 
+                 (OS_ERR 	* )&err);	
+
+	//创建ADC任务
+	OSTaskCreate((OS_TCB 	* )&ADCTaskTCB,		
+				 (CPU_CHAR	* )"ADC task", 		
+                 (OS_TASK_PTR )Adc_task, 			
+                 (void		* )0,					
+                 (OS_PRIO	  )ADC_TASK_PRIO,     	
+                 (CPU_STK   * )&ADC_TASK_STK[0],	
+                 (CPU_STK_SIZE)ADC_STK_SIZE/10,	
+                 (CPU_STK_SIZE)ADC_STK_SIZE,		
+                 (OS_MSG_QTY  )0,					
+                 (OS_TICK	  )0,					
+                 (void   	* )0,				
+                 (OS_OPT      )OS_OPT_TASK_STK_CHK|OS_OPT_TASK_STK_CLR, 
+                 (OS_ERR 	* )&err);
+				 
 	OS_TaskSuspend((OS_TCB*)&StartTaskTCB,&err);		//挂起开始任务			 
 	OS_CRITICAL_EXIT();	//进入临界区
 }

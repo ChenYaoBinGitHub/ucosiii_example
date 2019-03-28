@@ -42,3 +42,4 @@
 ..\obj\task.o: ..\SYSTEM\usart\usart.h
 ..\obj\task.o: ..\HARDWARE\LED\led.h
 ..\obj\task.o: ..\HARDWARE\LED\adc.h
+..\obj\task.o: ..\FWLIB\STM32F10x_FWLib\inc\stm32f10x_adc.h
