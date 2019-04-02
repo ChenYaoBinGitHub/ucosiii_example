@@ -43,3 +43,4 @@
 ..\obj\task.o: ..\HARDWARE\LED\led.h
 ..\obj\task.o: ..\HARDWARE\LED\adc.h
 ..\obj\task.o: ..\FWLIB\STM32F10x_FWLib\inc\stm32f10x_adc.h
+..\obj\task.o: ..\UCOSIII\uCOS_CONFIG\os_app_hooks.h

@@ -3,6 +3,7 @@
 #include "led.h"
 #include "adc.h"
 #include "ADS1118.h"
+#include "os_app_hooks.h"
 
 #define START_TASK_PRIO		3				//任务优先级
 #define START_STK_SIZE 		512				//任务堆栈大小	
@@ -16,7 +17,7 @@ int main(void)
 {
 	
 	OS_ERR err;
-	CPU_SR_ALLOC();
+	CPU_SR_ALLOC();			//为临界区代码段函数OS_CRITICAL_ENTER()，申请一个变量
 	
 	delay_init();       	//延时初始化
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2); //中断分组配置
@@ -61,6 +62,10 @@ void start_task(void *p_arg)
 	CPU_Init();
 #if OS_CFG_STAT_TASK_EN > 0u
    OSStatTaskCPUUsageInit(&err);  	//统计任务                
+#endif
+	
+#if OS_CFG_APP_HOOKS_EN > 0u
+	App_OS_SetAllHooks();  		//使用钩子函数              
 #endif
 	
 #ifdef CPU_CFG_INT_DIS_MEAS_EN		//如果使能了测量中断关闭时间
@@ -143,10 +148,48 @@ void start_task(void *p_arg)
                  (CPU_STK_SIZE)ADC_STK_SIZE/10,	
                  (CPU_STK_SIZE)ADC_STK_SIZE,		
                  (OS_MSG_QTY  )0,					
-                 (OS_TICK	  )0,					
+                 (OS_TICK	  )1,					
                  (void   	* )0,				
                  (OS_OPT      )OS_OPT_TASK_STK_CHK|OS_OPT_TASK_STK_CLR, 
                  (OS_ERR 	* )&err);
+				 
+	//创建时间片轮转调度任务
+	OSTaskCreate((OS_TCB 	* )&SchedRoundTaskTCB,		
+				 (CPU_CHAR	* )"SchedRound_task", 		
+                 (OS_TASK_PTR )SchedRound_task, 			
+                 (void		* )0,					
+                 (OS_PRIO	  )SchedRound_TASK_PRIO,     	
+                 (CPU_STK   * )&SchedRound_TASK_STK[0],	
+                 (CPU_STK_SIZE)SchedRound_STK_SIZE/10,	
+                 (CPU_STK_SIZE)SchedRound_STK_SIZE,		
+                 (OS_MSG_QTY  )0,					
+                 (OS_TICK	  )1,					
+                 (void   	* )0,				
+                 (OS_OPT      )OS_OPT_TASK_STK_CHK|OS_OPT_TASK_STK_CLR, 
+                 (OS_ERR 	* )&err);
+
+	//创建定时器1
+	OSTmrCreate((OS_TMR		*)&tmr1,					//OS_TMR *p_tmr:指向定时器的指针
+				(CPU_CHAR	*)"tmr1",					//CPU_CHAR *p_name:定时器名称
+				(OS_TICK	 )20,						//OS_TICK dly:初始化定时器的延迟值
+				(OS_TICK	 )100,          			//OS_TICK period:重复周期
+                (OS_OPT		 )OS_OPT_TMR_PERIODIC, 		//OS_OPT opt:定时器运行选项
+				(OS_TMR_CALLBACK_PTR)tmr1_callback,	//p_callback:指向回调函数的名字
+				(void	    *)0,						//*p_callback_arg:回调函数的参数
+                (OS_ERR	    *)&err);					//返回的错误码
+			 
+	//创建定时器2
+	OSTmrCreate((OS_TMR		*)&tmr2,		
+                (CPU_CHAR	*)"tmr2",		
+                (OS_TICK	 )200,						//200*10=2000ms	
+                (OS_TICK	 )0,  						//单次定时器不需要设置 period					
+                (OS_OPT		 )OS_OPT_TMR_ONE_SHOT, 		//单次定时器
+                (OS_TMR_CALLBACK_PTR)tmr2_callback,		//定时器2回调函数
+                (void	    *)0,			
+                (OS_ERR	    *)&err);
+				
+	OSTmrStart(&tmr1,&err);	//开启定时器1
+	OSTmrStart(&tmr2,&err);	//开启定时器2
 				 
 	OS_TaskSuspend((OS_TCB*)&StartTaskTCB,&err);		//挂起开始任务			 
 	OS_CRITICAL_EXIT();	//进入临界区

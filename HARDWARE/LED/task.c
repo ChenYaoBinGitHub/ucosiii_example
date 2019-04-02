@@ -4,6 +4,7 @@
 #include "adc.h"
 
 #include "stm32f10x_adc.h"
+#include <os_app_hooks.h>
 
 //检测任务的堆栈使用情况
 void stkCheck_task(OS_TCB *p_tcb,void *p_arg, char *title_str)				//计算堆栈任务函数
@@ -91,8 +92,6 @@ void float_task(void *p_arg)		//浮点测试任务
 //////////////////////////////////////////////////////
 //adc转换
 
-#define ADC_TASK_PRIO		8					//任务优先级
-#define ADC_STK_SIZE		128					//任务堆栈大小
 OS_TCB	ADCTaskTCB;								//任务控制块
 __align(8) CPU_STK	ADC_TASK_STK[ADC_STK_SIZE];				//任务堆栈(8字节对齐)
 void Adc_task(void *p_arg)
@@ -107,13 +106,54 @@ void Adc_task(void *p_arg)
 		printf("ADC_Channel_10:adc:%f\r\n", (float)adcval*3.30/4096);
 		adcval = Get_Adc(ADC_Channel_11);
 		printf("ADC_Channel_11111:adc:%f\r\n", (float)adcval*3.30/4096);
-		OSTimeDlyHMSM(0,0,0,200,OS_OPT_TIME_HMSM_STRICT,&err); //延时500ms
+		OSTimeDlyHMSM(0,0,1,0,OS_OPT_TIME_HMSM_STRICT,&err); //延时500ms
 	}
 
 }
 
+//////////////////////////////////////////////////////
+//时间片轮转调度任务
 
+OS_TCB	SchedRoundTaskTCB;								//任务控制块
+CPU_STK	SchedRound_TASK_STK[SchedRound_STK_SIZE];				//任务堆栈(8字节对齐)
+void SchedRound_task(void *p_arg)
+{
+	
+	OS_ERR err;
+	OS_TICK	tick;
+	p_arg = p_arg;
+	
+	while(1)
+	{	
+		tick = OSTimeGet(&err);
+		printf("SchedRound_task-->tick:%d\r\n", tick);
+		OSTimeDlyHMSM(0,0,1,0,OS_OPT_TIME_HMSM_STRICT,&err);
+	}
 
+}
 
+////////////////////////////////////////////////
+//软件定时器
 
+OS_TMR 	tmr1;		//定时器1
+OS_TMR	tmr2;		//定时器2
 
+void tmr1_callback(void *p_tmr, void *p_arg) 	//定时器1回调函数
+{
+	static u8 num = 0;
+	CPU_SR_ALLOC();			//为临界区代码段函数OS_CRITICAL_ENTER()，申请一个变量
+	
+	OS_CRITICAL_ENTER();			//进入临界区
+	printf("tmr1:%d\r\n", num++);
+	OS_CRITICAL_EXIT();				//退出临界区
+//	OSTmrStart(&tmr1,&err);	//开启定时器1(如果关闭了定时器，可使用此函数开启)
+//	OSTmrStop(&tmr1,OS_OPT_TMR_NONE,0,&err);//关闭定时器1
+
+}
+void tmr2_callback(void *p_tmr, void *p_arg)	//定时器2回调函数
+{
+	static u8 num = 0;
+	printf("tmr2:%d\r\n", num++);
+}
+
+//////////////////////////////////////////////////////////////////

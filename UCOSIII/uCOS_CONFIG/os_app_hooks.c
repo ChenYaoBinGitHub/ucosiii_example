@@ -34,6 +34,9 @@
 #include <os.h>
 #include <os_app_hooks.h>
 
+#include <stdio.h>
+#include "usart.h"	
+
 /*$PAGE*/
 /*
 ************************************************************************************************************************
@@ -169,6 +172,14 @@ void  App_OS_TaskReturnHook (OS_TCB  *p_tcb)
 
 void  App_OS_IdleTaskHook (void)
 {
+	static unsigned int num = 0;
+	
+	num++;
+	if(num == 1000000)
+	{
+		printf("in os_app_hooks.c function App_OS_IdleTaskHook running 50000times\r\n");
+		num = 0;
+	}
 
 }
 
