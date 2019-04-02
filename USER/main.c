@@ -12,6 +12,9 @@ CPU_STK START_TASK_STK[START_STK_SIZE];		//任务堆栈
 void start_task(void *p_arg);				//任务函数
 
 
+//OS_CFG_TMR_TASK_RATE_HZ        100u //定时器频率
+//OS_CFG_TICK_RATE_HZ            200u //时钟节拍频率
+
 /////////////////////////////////////////
 int main(void)
 {
