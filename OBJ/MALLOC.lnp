@@ -6,6 +6,7 @@
 "..\obj\ads1118.o"
 "..\obj\task.o"
 "..\obj\adc.o"
+"..\obj\mtx_sem.o"
 "..\obj\delay.o"
 "..\obj\sys.o"
 "..\obj\usart.o"

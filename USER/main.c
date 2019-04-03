@@ -3,6 +3,7 @@
 #include "led.h"
 #include "adc.h"
 #include "ADS1118.h"
+#include "mtx_sem.h"
 #include "os_app_hooks.h"
 
 #define START_TASK_PRIO		3				//任务优先级
@@ -193,10 +194,94 @@ void start_task(void *p_arg)
 				
 	OSTmrStart(&tmr1,&err);	//开启定时器1
 	OSTmrStart(&tmr2,&err);	//开启定时器2
+				
+	//创建一个信号量
+	OSSemCreate ((OS_SEM*	)&MY_SEM_SHARE,
+                 (CPU_CHAR*	)"MY_SEM_SHARE",
+                 (OS_SEM_CTR)1,				//信号量为二进制信号量	
+                 (OS_ERR*	)&err);
+				
+	//信号量共享资源任务1
+	OSTaskCreate((OS_TCB 	* )&SemShare1TaskTCB,		
+				 (CPU_CHAR	* )"SemShare1_task", 		
+                 (OS_TASK_PTR )SemShare1_task, 			
+                 (void		* )0,					
+                 (OS_PRIO	  )SemShare1_TASK_PRIO,     	
+                 (CPU_STK   * )&SemShare1_TASK_STK[0],	
+                 (CPU_STK_SIZE)SemShare1_STK_SIZE/10,	
+                 (CPU_STK_SIZE)SemShare1_STK_SIZE,		
+                 (OS_MSG_QTY  )0,					
+                 (OS_TICK	  )0,					
+                 (void   	* )0,				
+                 (OS_OPT      )OS_OPT_TASK_STK_CHK|OS_OPT_TASK_STK_CLR, 
+                 (OS_ERR 	* )&err);
+			 
+	//信号量共享资源任务2
+	OSTaskCreate((OS_TCB 	* )&SemShare2TaskTCB,		
+				 (CPU_CHAR	* )"SemShare2_task", 		
+                 (OS_TASK_PTR )SemShare2_task, 			
+                 (void		* )0,					
+                 (OS_PRIO	  )SemShare2_TASK_PRIO,     	
+                 (CPU_STK   * )&SemShare2_TASK_STK[0],	
+                 (CPU_STK_SIZE)SemShare2_STK_SIZE/10,	
+                 (CPU_STK_SIZE)SemShare2_STK_SIZE,		
+                 (OS_MSG_QTY  )0,					
+                 (OS_TICK	  )0,					
+                 (void   	* )0,				
+                 (OS_OPT      )OS_OPT_TASK_STK_CHK|OS_OPT_TASK_STK_CLR, 
+                 (OS_ERR 	* )&err);
+				 
+	//创建一个信号量，用于任务同步
+	OSSemCreate ((OS_SEM*	)&MY_SEM_SYNC,
+                 (CPU_CHAR*	)"MY_SEM_SYNC",
+                 (OS_SEM_CTR)0,		
+                 (OS_ERR*	)&err);
+				 
+	//信号量共享资源任务1
+	OSTaskCreate((OS_TCB 	* )&SemSync1TaskTCB,		
+				 (CPU_CHAR	* )"SemSync1_task", 		
+                 (OS_TASK_PTR )SemSync1_task, 			
+                 (void		* )0,					
+                 (OS_PRIO	  )SemSync1_TASK_PRIO,     	
+                 (CPU_STK   * )&SemSync1_TASK_STK[0],	
+                 (CPU_STK_SIZE)SemSync1_STK_SIZE/10,	
+                 (CPU_STK_SIZE)SemSync1_STK_SIZE,		
+                 (OS_MSG_QTY  )0,					
+                 (OS_TICK	  )0,					
+                 (void   	* )0,				
+                 (OS_OPT      )OS_OPT_TASK_STK_CHK|OS_OPT_TASK_STK_CLR, 
+                 (OS_ERR 	* )&err);
+			 
+	//信号量共享资源任务2
+	OSTaskCreate((OS_TCB 	* )&SemSync2TaskTCB,		
+				 (CPU_CHAR	* )"SemSync2_task", 		
+                 (OS_TASK_PTR )SemSync2_task, 			
+                 (void		* )0,					
+                 (OS_PRIO	  )SemSync2_TASK_PRIO,     	
+                 (CPU_STK   * )&SemSync2_TASK_STK[0],	
+                 (CPU_STK_SIZE)SemSync2_STK_SIZE/10,	
+                 (CPU_STK_SIZE)SemSync2_STK_SIZE,		
+                 (OS_MSG_QTY  )0,					
+                 (OS_TICK	  )0,					
+                 (void   	* )0,				
+                 (OS_OPT      )OS_OPT_TASK_STK_CHK|OS_OPT_TASK_STK_CLR, 
+                 (OS_ERR 	* )&err);
+				 
+	//创建互斥信号量的相关函数
+	MtxSem_CreateTask();
 				 
 	OS_TaskSuspend((OS_TCB*)&StartTaskTCB,&err);		//挂起开始任务			 
 	OS_CRITICAL_EXIT();	//进入临界区
 }
+
+
+
+
+
+
+
+
+
 
 
 

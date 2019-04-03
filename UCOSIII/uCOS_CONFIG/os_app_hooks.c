@@ -177,7 +177,7 @@ void  App_OS_IdleTaskHook (void)
 	num++;
 	if(num == 1000000)
 	{
-		printf("in os_app_hooks.c function App_OS_IdleTaskHook running 50000times\r\n");
+		printf("in os_app_hooks.c function App_OS_IdleTaskHook running 1000000times\r\n");
 		num = 0;
 	}
 

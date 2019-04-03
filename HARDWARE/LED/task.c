@@ -22,6 +22,7 @@ void stkCheck_task(OS_TCB *p_tcb,void *p_arg, char *title_str)				//计算堆栈任务
 }
 
 /////////////////////////////////////////////////////////////////////
+//任务挂起与恢复
 OS_TCB SuspendResumeTaskTCB;						//任务控制块
 CPU_STK SuspendResume_TASK_STK[SuspendResume_STK_SIZE];		//任务堆栈
 
@@ -36,12 +37,12 @@ void SuspendResume_task(void *p_arg)				//挂起与恢复任务
 		cunt++;
 		if(cunt == 5)
 		{
-			printf("suspend float_task\r\n");
+//		printf("suspend float_task\r\n");
 			OSTaskSuspend(&FloatTaskTCB, &err);
 		}
 		if(cunt == 10)
 		{
-			printf("resume float_task\r\n");
+//			printf("resume float_task\r\n");
 			OSTaskResume(&FloatTaskTCB, &err);
 			cunt = 0;
 		}
@@ -82,7 +83,7 @@ void float_task(void *p_arg)		//浮点测试任务
 	{
 		float_num+=0.01f;
 		OS_CRITICAL_ENTER();	//进入临界区
-		printf("float_num的值为: %.4f\r\n",float_num);
+//		printf("float_num的值为: %.4f\r\n",float_num);
 		OS_CRITICAL_EXIT();		//退出临界区
 		delay_ms(1000);			//延时500ms
 //		stkCheck_task(&FloatTaskTCB, p_arg, "float");	//检测float任务的堆栈空间使用状况
@@ -102,10 +103,10 @@ void Adc_task(void *p_arg)
 	
 	while(1)
 	{
-		adcval = Get_Adc(ADC_Channel_10);
+//		adcval = Get_Adc(ADC_Channel_10);
 		printf("ADC_Channel_10:adc:%f\r\n", (float)adcval*3.30/4096);
 		adcval = Get_Adc(ADC_Channel_11);
-		printf("ADC_Channel_11111:adc:%f\r\n", (float)adcval*3.30/4096);
+//		printf("ADC_Channel_11111:adc:%f\r\n", (float)adcval*3.30/4096);
 		OSTimeDlyHMSM(0,0,1,0,OS_OPT_TIME_HMSM_STRICT,&err); //延时500ms
 	}
 
@@ -126,7 +127,7 @@ void SchedRound_task(void *p_arg)
 	while(1)
 	{	
 		tick = OSTimeGet(&err);
-		printf("SchedRound_task-->tick:%d\r\n", tick);
+//		printf("SchedRound_task-->tick:%d\r\n", tick);
 		OSTimeDlyHMSM(0,0,1,0,OS_OPT_TIME_HMSM_STRICT,&err);
 	}
 
@@ -157,3 +158,97 @@ void tmr2_callback(void *p_tmr, void *p_arg)	//定时器2回调函数
 }
 
 //////////////////////////////////////////////////////////////////
+//信号量共享资源
+
+u8 share_resource[30];  //共享资源区
+OS_SEM	MY_SEM_SHARE;	//定义一个信号量，用于访问共享资源
+
+OS_TCB	SemShare1TaskTCB;						//任务控制块
+CPU_STK SemShare1_TASK_STK[SemShare1_STK_SIZE];	//任务堆栈
+void SemShare1_task(void *p_arg)
+{
+	OS_ERR err;
+	u8 task1_str[]="First task Running!";
+	
+	while(1)
+	{
+		printf("Semshare:task1111\r\n");
+		OSSemPend(&MY_SEM_SHARE,0,OS_OPT_PEND_BLOCKING,0,&err); 	//请求信号量,阻塞
+		memcpy(share_resource,task1_str,sizeof(task1_str));			//向共享资源区拷贝数据
+		delay_ms(300);
+		printf("%s\r\n",share_resource);							//串口输出共享资源区数据		
+		OSSemPost (&MY_SEM_SHARE,OS_OPT_POST_1,&err);				//发送信号量
+		OSTimeDlyHMSM(0,0,1,0,OS_OPT_TIME_PERIODIC,&err);   		//延时1s	
+	}
+
+}
+
+OS_TCB	SemShare2TaskTCB;						//任务控制块
+CPU_STK SemShare2_TASK_STK[SemShare2_STK_SIZE];	//任务堆栈
+void SemShare2_task(void *p_arg)
+{
+	OS_ERR err;
+	u8 task2_str[]="Sencond task Running!";
+	
+	while(1)
+	{
+		printf("Semshare:task2222\r\n");
+		OSSemPend(&MY_SEM_SHARE,0,OS_OPT_PEND_BLOCKING,0,&err); 	//请求信号量,阻塞
+		memcpy(share_resource,task2_str,sizeof(task2_str));			//向共享资源区拷贝数据
+		delay_ms(300);
+		printf("%s\r\n",share_resource);							//串口输出共享资源区数据		
+		OSSemPost (&MY_SEM_SHARE,OS_OPT_POST_1,&err);				//发送信号量
+		OSTimeDlyHMSM(0,0,1,0,OS_OPT_TIME_PERIODIC,&err);   		//延时1s	
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////
+//信号量任务同步：信号量多数用于任务同步和中断服务函数同步
+
+OS_SEM	MY_SEM_SYNC;		//定义一个信号量，用于任务同步
+
+OS_TCB	SemSync1TaskTCB;							//任务控制块
+CPU_STK SemSync1_TASK_STK[SemSync1_STK_SIZE];	//任务堆栈
+
+void SemSync1_task(void *p_arg)
+{
+	OS_ERR err;
+	static u8 count = 0;
+	
+	while(1)
+	{
+		if(count++ == 100)
+		{
+			count = 0;
+			OSSemPost(&MY_SEM_SYNC,OS_OPT_POST_1,&err);//发送信号量
+			printf("SemSync111:SYNC_SEM.Ctr:%d\r\n",MY_SEM_SYNC.Ctr);
+		}
+		OSTimeDlyHMSM(0,0,0,10,OS_OPT_TIME_PERIODIC,&err);   //延时10ms
+	}
+}
+
+OS_TCB	SemSync2TaskTCB;							//任务控制块
+CPU_STK SemSync2_TASK_STK[SemSync2_STK_SIZE];	//任务堆栈
+
+void SemSync2_task(void *p_arg)
+{
+	OS_ERR err;
+	
+	while(1)
+	{	
+		OSSemPend(&MY_SEM_SYNC,0,OS_OPT_PEND_BLOCKING,0,&err);//请求信号量
+		printf("SemSync222:SYNC_SEM.Ctr:%d\r\n",MY_SEM_SYNC.Ctr);
+		OSTimeDlyHMSM(0,0,2,0,OS_OPT_TIME_PERIODIC,&err);  
+	}
+}
+
+////////////////////////////////////////////////////////////////////////
+//
+
+
+
+
+
+
+
+

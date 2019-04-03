@@ -423,6 +423,11 @@
               <FileType>1</FileType>
               <FilePath>..\HARDWARE\LED\adc.c</FilePath>
             </File>
+            <File>
+              <FileName>mtx_sem.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HARDWARE\LED\mtx_sem.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
