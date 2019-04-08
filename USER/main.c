@@ -97,178 +97,179 @@ void start_task(void *p_arg)
                  (OS_OPT      )OS_OPT_TASK_STK_CHK|OS_OPT_TASK_STK_CLR,
                  (OS_ERR 	* )&err);								
 				 printf("led0:%d\r\n", err);		 
-	//创建浮点测试任务
-	OSTaskCreate((OS_TCB 	* )&FloatTaskTCB,		
-				 (CPU_CHAR	* )"float test task", 		
-                 (OS_TASK_PTR )float_task, 			
-                 (void		* )0,					
-                 (OS_PRIO	  )FLOAT_TASK_PRIO,     	
-                 (CPU_STK   * )&FLOAT_TASK_STK[0],	
-                 (CPU_STK_SIZE)FLOAT_STK_SIZE/10,	
-                 (CPU_STK_SIZE)FLOAT_STK_SIZE,		
-                 (OS_MSG_QTY  )0,					
-                 (OS_TICK	  )0,					
-                 (void   	* )0,				
-                 (OS_OPT      )OS_OPT_TASK_STK_CHK|OS_OPT_TASK_STK_CLR, 
-                 (OS_ERR 	* )&err);
+//	//创建浮点测试任务
+//	OSTaskCreate((OS_TCB 	* )&FloatTaskTCB,		
+//				 (CPU_CHAR	* )"float test task", 		
+//                 (OS_TASK_PTR )float_task, 			
+//                 (void		* )0,					
+//                 (OS_PRIO	  )FLOAT_TASK_PRIO,     	
+//                 (CPU_STK   * )&FLOAT_TASK_STK[0],	
+//                 (CPU_STK_SIZE)FLOAT_STK_SIZE/10,	
+//                 (CPU_STK_SIZE)FLOAT_STK_SIZE,		
+//                 (OS_MSG_QTY  )0,					
+//                 (OS_TICK	  )0,					
+//                 (void   	* )0,				
+//                 (OS_OPT      )OS_OPT_TASK_STK_CHK|OS_OPT_TASK_STK_CLR, 
+//                 (OS_ERR 	* )&err);
+//	
+//	//创建ADS1118任务
+//	OSTaskCreate((OS_TCB 	* )&ADS1118TaskTCB,		
+//				 (CPU_CHAR	* )"ADS1118 task", 		
+//                 (OS_TASK_PTR )ads1118_task, 			
+//                 (void		* )0,					
+//                 (OS_PRIO	  )ADS1118_TASK_PRIO,     	
+//                 (CPU_STK   * )&ADS1118_TASK_STK[0],	
+//                 (CPU_STK_SIZE)ADS1118_STK_SIZE/10,	
+//                 (CPU_STK_SIZE)ADS1118_STK_SIZE,		
+//                 (OS_MSG_QTY  )0,					
+//                 (OS_TICK	  )0,					
+//                 (void   	* )0,				
+//                 (OS_OPT      )OS_OPT_TASK_STK_CHK|OS_OPT_TASK_STK_CLR, 
+//                 (OS_ERR 	* )&err);				 
+
+//	//创建挂起与恢复任务
+//	OSTaskCreate((OS_TCB 	* )&SuspendResumeTaskTCB,		
+//				 (CPU_CHAR	* )"SuspendResume task", 		
+//                 (OS_TASK_PTR )SuspendResume_task, 			
+//                 (void		* )0,					
+//                 (OS_PRIO	  )SuspendResume_TASK_PRIO,     	
+//                 (CPU_STK   * )&SuspendResume_TASK_STK[0],	
+//                 (CPU_STK_SIZE)SuspendResume_STK_SIZE/10,	
+//                 (CPU_STK_SIZE)SuspendResume_STK_SIZE,		
+//                 (OS_MSG_QTY  )0,					
+//                 (OS_TICK	  )0,					
+//                 (void   	* )0,				
+//                 (OS_OPT      )OS_OPT_TASK_STK_CHK|OS_OPT_TASK_STK_CLR, 
+//                 (OS_ERR 	* )&err);	
+
+//	//创建ADC任务
+//	OSTaskCreate((OS_TCB 	* )&ADCTaskTCB,		
+//				 (CPU_CHAR	* )"ADC task", 		
+//                 (OS_TASK_PTR )Adc_task, 			
+//                 (void		* )0,					
+//                 (OS_PRIO	  )ADC_TASK_PRIO,     	
+//                 (CPU_STK   * )&ADC_TASK_STK[0],	
+//                 (CPU_STK_SIZE)ADC_STK_SIZE/10,	
+//                 (CPU_STK_SIZE)ADC_STK_SIZE,		
+//                 (OS_MSG_QTY  )0,					
+//                 (OS_TICK	  )1,					
+//                 (void   	* )0,				
+//                 (OS_OPT      )OS_OPT_TASK_STK_CHK|OS_OPT_TASK_STK_CLR, 
+//                 (OS_ERR 	* )&err);
+//				 
+//	//创建时间片轮转调度任务
+//	OSTaskCreate((OS_TCB 	* )&SchedRoundTaskTCB,		
+//				 (CPU_CHAR	* )"SchedRound_task", 		
+//                 (OS_TASK_PTR )SchedRound_task, 			
+//                 (void		* )0,					
+//                 (OS_PRIO	  )SchedRound_TASK_PRIO,     	
+//                 (CPU_STK   * )&SchedRound_TASK_STK[0],	
+//                 (CPU_STK_SIZE)SchedRound_STK_SIZE/10,	
+//                 (CPU_STK_SIZE)SchedRound_STK_SIZE,		
+//                 (OS_MSG_QTY  )0,					
+//                 (OS_TICK	  )1,					
+//                 (void   	* )0,				
+//                 (OS_OPT      )OS_OPT_TASK_STK_CHK|OS_OPT_TASK_STK_CLR, 
+//                 (OS_ERR 	* )&err);
+
+//	//创建定时器1
+//	OSTmrCreate((OS_TMR		*)&tmr1,					//OS_TMR *p_tmr:指向定时器的指针
+//				(CPU_CHAR	*)"tmr1",					//CPU_CHAR *p_name:定时器名称
+//				(OS_TICK	 )20,						//OS_TICK dly:初始化定时器的延迟值
+//				(OS_TICK	 )100,          			//OS_TICK period:重复周期
+//                (OS_OPT		 )OS_OPT_TMR_PERIODIC, 		//OS_OPT opt:定时器运行选项
+//				(OS_TMR_CALLBACK_PTR)tmr1_callback,	//p_callback:指向回调函数的名字
+//				(void	    *)0,						//*p_callback_arg:回调函数的参数
+//                (OS_ERR	    *)&err);					//返回的错误码
+//			 
+//	//创建定时器2
+//	OSTmrCreate((OS_TMR		*)&tmr2,		
+//                (CPU_CHAR	*)"tmr2",		
+//                (OS_TICK	 )200,						//200*10=2000ms	
+//                (OS_TICK	 )0,  						//单次定时器不需要设置 period					
+//                (OS_OPT		 )OS_OPT_TMR_ONE_SHOT, 		//单次定时器
+//                (OS_TMR_CALLBACK_PTR)tmr2_callback,		//定时器2回调函数
+//                (void	    *)0,			
+//                (OS_ERR	    *)&err);
+//				
+//	OSTmrStart(&tmr1,&err);	//开启定时器1
+//	OSTmrStart(&tmr2,&err);	//开启定时器2
+//				
+//	//创建一个信号量
+//	OSSemCreate ((OS_SEM*	)&MY_SEM_SHARE,
+//                 (CPU_CHAR*	)"MY_SEM_SHARE",
+//                 (OS_SEM_CTR)1,				//信号量为二进制信号量	
+//                 (OS_ERR*	)&err);
+//				
+//	//信号量共享资源任务1
+//	OSTaskCreate((OS_TCB 	* )&SemShare1TaskTCB,		
+//				 (CPU_CHAR	* )"SemShare1_task", 		
+//                 (OS_TASK_PTR )SemShare1_task, 			
+//                 (void		* )0,					
+//                 (OS_PRIO	  )SemShare1_TASK_PRIO,     	
+//                 (CPU_STK   * )&SemShare1_TASK_STK[0],	
+//                 (CPU_STK_SIZE)SemShare1_STK_SIZE/10,	
+//                 (CPU_STK_SIZE)SemShare1_STK_SIZE,		
+//                 (OS_MSG_QTY  )0,					
+//                 (OS_TICK	  )0,					
+//                 (void   	* )0,				
+//                 (OS_OPT      )OS_OPT_TASK_STK_CHK|OS_OPT_TASK_STK_CLR, 
+//                 (OS_ERR 	* )&err);
+//			 
+//	//信号量共享资源任务2
+//	OSTaskCreate((OS_TCB 	* )&SemShare2TaskTCB,		
+//				 (CPU_CHAR	* )"SemShare2_task", 		
+//                 (OS_TASK_PTR )SemShare2_task, 			
+//                 (void		* )0,					
+//                 (OS_PRIO	  )SemShare2_TASK_PRIO,     	
+//                 (CPU_STK   * )&SemShare2_TASK_STK[0],	
+//                 (CPU_STK_SIZE)SemShare2_STK_SIZE/10,	
+//                 (CPU_STK_SIZE)SemShare2_STK_SIZE,		
+//                 (OS_MSG_QTY  )0,					
+//                 (OS_TICK	  )0,					
+//                 (void   	* )0,				
+//                 (OS_OPT      )OS_OPT_TASK_STK_CHK|OS_OPT_TASK_STK_CLR, 
+//                 (OS_ERR 	* )&err);
+//				 
+//	//创建一个信号量，用于任务同步
+//	OSSemCreate ((OS_SEM*	)&MY_SEM_SYNC,
+//                 (CPU_CHAR*	)"MY_SEM_SYNC",
+//                 (OS_SEM_CTR)0,		
+//                 (OS_ERR*	)&err);
+//				 
+//	//信号量共享资源任务1
+//	OSTaskCreate((OS_TCB 	* )&SemSync1TaskTCB,		
+//				 (CPU_CHAR	* )"SemSync1_task", 		
+//                 (OS_TASK_PTR )SemSync1_task, 			
+//                 (void		* )0,					
+//                 (OS_PRIO	  )SemSync1_TASK_PRIO,     	
+//                 (CPU_STK   * )&SemSync1_TASK_STK[0],	
+//                 (CPU_STK_SIZE)SemSync1_STK_SIZE/10,	
+//                 (CPU_STK_SIZE)SemSync1_STK_SIZE,		
+//                 (OS_MSG_QTY  )0,					
+//                 (OS_TICK	  )0,					
+//                 (void   	* )0,				
+//                 (OS_OPT      )OS_OPT_TASK_STK_CHK|OS_OPT_TASK_STK_CLR, 
+//                 (OS_ERR 	* )&err);
+//			 
+//	//信号量共享资源任务2
+//	OSTaskCreate((OS_TCB 	* )&SemSync2TaskTCB,		
+//				 (CPU_CHAR	* )"SemSync2_task", 		
+//                 (OS_TASK_PTR )SemSync2_task, 			
+//                 (void		* )0,					
+//                 (OS_PRIO	  )SemSync2_TASK_PRIO,     	
+//                 (CPU_STK   * )&SemSync2_TASK_STK[0],	
+//                 (CPU_STK_SIZE)SemSync2_STK_SIZE/10,	
+//                 (CPU_STK_SIZE)SemSync2_STK_SIZE,		
+//                 (OS_MSG_QTY  )0,					
+//                 (OS_TICK	  )0,					
+//                 (void   	* )0,				
+//                 (OS_OPT      )OS_OPT_TASK_STK_CHK|OS_OPT_TASK_STK_CLR, 
+//                 (OS_ERR 	* )&err);
+				 
 	
-	//创建ADS1118任务
-	OSTaskCreate((OS_TCB 	* )&ADS1118TaskTCB,		
-				 (CPU_CHAR	* )"ADS1118 task", 		
-                 (OS_TASK_PTR )ads1118_task, 			
-                 (void		* )0,					
-                 (OS_PRIO	  )ADS1118_TASK_PRIO,     	
-                 (CPU_STK   * )&ADS1118_TASK_STK[0],	
-                 (CPU_STK_SIZE)ADS1118_STK_SIZE/10,	
-                 (CPU_STK_SIZE)ADS1118_STK_SIZE,		
-                 (OS_MSG_QTY  )0,					
-                 (OS_TICK	  )0,					
-                 (void   	* )0,				
-                 (OS_OPT      )OS_OPT_TASK_STK_CHK|OS_OPT_TASK_STK_CLR, 
-                 (OS_ERR 	* )&err);				 
-
-	//创建挂起与恢复任务
-	OSTaskCreate((OS_TCB 	* )&SuspendResumeTaskTCB,		
-				 (CPU_CHAR	* )"SuspendResume task", 		
-                 (OS_TASK_PTR )SuspendResume_task, 			
-                 (void		* )0,					
-                 (OS_PRIO	  )SuspendResume_TASK_PRIO,     	
-                 (CPU_STK   * )&SuspendResume_TASK_STK[0],	
-                 (CPU_STK_SIZE)SuspendResume_STK_SIZE/10,	
-                 (CPU_STK_SIZE)SuspendResume_STK_SIZE,		
-                 (OS_MSG_QTY  )0,					
-                 (OS_TICK	  )0,					
-                 (void   	* )0,				
-                 (OS_OPT      )OS_OPT_TASK_STK_CHK|OS_OPT_TASK_STK_CLR, 
-                 (OS_ERR 	* )&err);	
-
-	//创建ADC任务
-	OSTaskCreate((OS_TCB 	* )&ADCTaskTCB,		
-				 (CPU_CHAR	* )"ADC task", 		
-                 (OS_TASK_PTR )Adc_task, 			
-                 (void		* )0,					
-                 (OS_PRIO	  )ADC_TASK_PRIO,     	
-                 (CPU_STK   * )&ADC_TASK_STK[0],	
-                 (CPU_STK_SIZE)ADC_STK_SIZE/10,	
-                 (CPU_STK_SIZE)ADC_STK_SIZE,		
-                 (OS_MSG_QTY  )0,					
-                 (OS_TICK	  )1,					
-                 (void   	* )0,				
-                 (OS_OPT      )OS_OPT_TASK_STK_CHK|OS_OPT_TASK_STK_CLR, 
-                 (OS_ERR 	* )&err);
-				 
-	//创建时间片轮转调度任务
-	OSTaskCreate((OS_TCB 	* )&SchedRoundTaskTCB,		
-				 (CPU_CHAR	* )"SchedRound_task", 		
-                 (OS_TASK_PTR )SchedRound_task, 			
-                 (void		* )0,					
-                 (OS_PRIO	  )SchedRound_TASK_PRIO,     	
-                 (CPU_STK   * )&SchedRound_TASK_STK[0],	
-                 (CPU_STK_SIZE)SchedRound_STK_SIZE/10,	
-                 (CPU_STK_SIZE)SchedRound_STK_SIZE,		
-                 (OS_MSG_QTY  )0,					
-                 (OS_TICK	  )1,					
-                 (void   	* )0,				
-                 (OS_OPT      )OS_OPT_TASK_STK_CHK|OS_OPT_TASK_STK_CLR, 
-                 (OS_ERR 	* )&err);
-
-	//创建定时器1
-	OSTmrCreate((OS_TMR		*)&tmr1,					//OS_TMR *p_tmr:指向定时器的指针
-				(CPU_CHAR	*)"tmr1",					//CPU_CHAR *p_name:定时器名称
-				(OS_TICK	 )20,						//OS_TICK dly:初始化定时器的延迟值
-				(OS_TICK	 )100,          			//OS_TICK period:重复周期
-                (OS_OPT		 )OS_OPT_TMR_PERIODIC, 		//OS_OPT opt:定时器运行选项
-				(OS_TMR_CALLBACK_PTR)tmr1_callback,	//p_callback:指向回调函数的名字
-				(void	    *)0,						//*p_callback_arg:回调函数的参数
-                (OS_ERR	    *)&err);					//返回的错误码
-			 
-	//创建定时器2
-	OSTmrCreate((OS_TMR		*)&tmr2,		
-                (CPU_CHAR	*)"tmr2",		
-                (OS_TICK	 )200,						//200*10=2000ms	
-                (OS_TICK	 )0,  						//单次定时器不需要设置 period					
-                (OS_OPT		 )OS_OPT_TMR_ONE_SHOT, 		//单次定时器
-                (OS_TMR_CALLBACK_PTR)tmr2_callback,		//定时器2回调函数
-                (void	    *)0,			
-                (OS_ERR	    *)&err);
-				
-	OSTmrStart(&tmr1,&err);	//开启定时器1
-	OSTmrStart(&tmr2,&err);	//开启定时器2
-				
-	//创建一个信号量
-	OSSemCreate ((OS_SEM*	)&MY_SEM_SHARE,
-                 (CPU_CHAR*	)"MY_SEM_SHARE",
-                 (OS_SEM_CTR)1,				//信号量为二进制信号量	
-                 (OS_ERR*	)&err);
-				
-	//信号量共享资源任务1
-	OSTaskCreate((OS_TCB 	* )&SemShare1TaskTCB,		
-				 (CPU_CHAR	* )"SemShare1_task", 		
-                 (OS_TASK_PTR )SemShare1_task, 			
-                 (void		* )0,					
-                 (OS_PRIO	  )SemShare1_TASK_PRIO,     	
-                 (CPU_STK   * )&SemShare1_TASK_STK[0],	
-                 (CPU_STK_SIZE)SemShare1_STK_SIZE/10,	
-                 (CPU_STK_SIZE)SemShare1_STK_SIZE,		
-                 (OS_MSG_QTY  )0,					
-                 (OS_TICK	  )0,					
-                 (void   	* )0,				
-                 (OS_OPT      )OS_OPT_TASK_STK_CHK|OS_OPT_TASK_STK_CLR, 
-                 (OS_ERR 	* )&err);
-			 
-	//信号量共享资源任务2
-	OSTaskCreate((OS_TCB 	* )&SemShare2TaskTCB,		
-				 (CPU_CHAR	* )"SemShare2_task", 		
-                 (OS_TASK_PTR )SemShare2_task, 			
-                 (void		* )0,					
-                 (OS_PRIO	  )SemShare2_TASK_PRIO,     	
-                 (CPU_STK   * )&SemShare2_TASK_STK[0],	
-                 (CPU_STK_SIZE)SemShare2_STK_SIZE/10,	
-                 (CPU_STK_SIZE)SemShare2_STK_SIZE,		
-                 (OS_MSG_QTY  )0,					
-                 (OS_TICK	  )0,					
-                 (void   	* )0,				
-                 (OS_OPT      )OS_OPT_TASK_STK_CHK|OS_OPT_TASK_STK_CLR, 
-                 (OS_ERR 	* )&err);
-				 
-	//创建一个信号量，用于任务同步
-	OSSemCreate ((OS_SEM*	)&MY_SEM_SYNC,
-                 (CPU_CHAR*	)"MY_SEM_SYNC",
-                 (OS_SEM_CTR)0,		
-                 (OS_ERR*	)&err);
-				 
-	//信号量共享资源任务1
-	OSTaskCreate((OS_TCB 	* )&SemSync1TaskTCB,		
-				 (CPU_CHAR	* )"SemSync1_task", 		
-                 (OS_TASK_PTR )SemSync1_task, 			
-                 (void		* )0,					
-                 (OS_PRIO	  )SemSync1_TASK_PRIO,     	
-                 (CPU_STK   * )&SemSync1_TASK_STK[0],	
-                 (CPU_STK_SIZE)SemSync1_STK_SIZE/10,	
-                 (CPU_STK_SIZE)SemSync1_STK_SIZE,		
-                 (OS_MSG_QTY  )0,					
-                 (OS_TICK	  )0,					
-                 (void   	* )0,				
-                 (OS_OPT      )OS_OPT_TASK_STK_CHK|OS_OPT_TASK_STK_CLR, 
-                 (OS_ERR 	* )&err);
-			 
-	//信号量共享资源任务2
-	OSTaskCreate((OS_TCB 	* )&SemSync2TaskTCB,		
-				 (CPU_CHAR	* )"SemSync2_task", 		
-                 (OS_TASK_PTR )SemSync2_task, 			
-                 (void		* )0,					
-                 (OS_PRIO	  )SemSync2_TASK_PRIO,     	
-                 (CPU_STK   * )&SemSync2_TASK_STK[0],	
-                 (CPU_STK_SIZE)SemSync2_STK_SIZE/10,	
-                 (CPU_STK_SIZE)SemSync2_STK_SIZE,		
-                 (OS_MSG_QTY  )0,					
-                 (OS_TICK	  )0,					
-                 (void   	* )0,				
-                 (OS_OPT      )OS_OPT_TASK_STK_CHK|OS_OPT_TASK_STK_CLR, 
-                 (OS_ERR 	* )&err);
-				 
-	//创建互斥信号量的相关函数
-	MtxSem_CreateTask();
+//	MtxSem_CreateTask();	//创建互斥信号量的相关函数
+	FuncSem_CreateTask();	//创建任务内嵌函数
 				 
 	OS_TaskSuspend((OS_TCB*)&StartTaskTCB,&err);		//挂起开始任务			 
 	OS_CRITICAL_EXIT();	//进入临界区
