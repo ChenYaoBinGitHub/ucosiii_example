@@ -131,8 +131,7 @@ void Sem_task1(void *p_arg)
 			printf("task sem Post task2\r\n");
 			num = 0;
 		}
-		OSTimeDlyHMSM(0,0,0,100,OS_OPT_TIME_PERIODIC,&err);   		//—” ±100ms
-	
+		OSTimeDlyHMSM(0,0,0,100,OS_OPT_TIME_PERIODIC,&err);   		//—” ±100ms	
 	}
 
 }
@@ -190,6 +189,5 @@ void FuncSem_CreateTask(void)
                  (void   	* )0,					
                  (OS_OPT      )OS_OPT_TASK_STK_CHK|OS_OPT_TASK_STK_CLR,
                  (OS_ERR 	* )&err);	
-
 }
 

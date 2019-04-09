@@ -61,7 +61,7 @@ void led0_task(void *p_arg)					//led0任务函数
 	while(1)
 	{
 		LED0=0;
-		printf("LED0_TESK\r\n");
+//		printf("LED0_TESK\r\n");
 		Usart_ReceiveMsg(USART1);
 		OSTimeDlyHMSM(0,0,0,200,OS_OPT_TIME_HMSM_STRICT,&err); //延时200ms
 		LED0=1;

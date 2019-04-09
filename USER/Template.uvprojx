@@ -428,6 +428,11 @@
               <FileType>1</FileType>
               <FilePath>..\HARDWARE\LED\mtx_sem.c</FilePath>
             </File>
+            <File>
+              <FileName>msg.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HARDWARE\LED\msg.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

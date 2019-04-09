@@ -2,6 +2,7 @@
 
 #include "led.h"
 #include "adc.h"
+#include "msg.h"
 #include "ADS1118.h"
 #include "mtx_sem.h"
 #include "os_app_hooks.h"
@@ -48,11 +49,11 @@ int main(void)
                  (OS_ERR 	* )&err);				//存放该函数错误时的返回值
 	OS_CRITICAL_EXIT();	//退出临界区	 
 	OSStart(&err);  	//开启UCOSIII
-	while(1)
-	{
-//		adcval = Get_Adc_Average(ADC_Channel_10, 10);
+//while(1)
+//{
+////		adcval = Get_Adc_Average(ADC_Channel_10, 10);
 
-	}
+//}
 
 }
 
@@ -269,7 +270,8 @@ void start_task(void *p_arg)
 				 
 	
 //	MtxSem_CreateTask();	//创建互斥信号量的相关函数
-	FuncSem_CreateTask();	//创建任务内嵌函数
+//	FuncSem_CreateTask();	//创建任务内嵌函数
+	Msg_CreateTask();
 				 
 	OS_TaskSuspend((OS_TCB*)&StartTaskTCB,&err);		//挂起开始任务			 
 	OS_CRITICAL_EXIT();	//进入临界区
