@@ -1,5 +1,5 @@
 Dependencies for Project 'Template', Target 'Target 1': (DO NOT MODIFY !)
-F (.\main.c)(0x5CAC7189)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I ..\USER -I ..\CORE -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\SYSTEM\usart -I ..\STM32F10x_FWLib\inc -I ..\FWLIB\STM32F10x_FWLib\inc -I ..\HARDWARE\LED -I ..\UCOSIII\uC-CPU -I ..\UCOSIII\uC-LIB -I ..\UCOSIII\uCOS-III -I ..\UCOSIII\UCOS_BSP -I ..\UCOSIII\uCOS_CONFIG -I ..\UCOSIII\uCOS-III\Source -I ..\UCOSIII\uC-CPU\ARM-Cortex-M3\RealView -I ..\UCOSIII\uC-LIB\Ports\ARM-Cortex-M3\RealView -I ..\UCOSIII\uCOS-III\Ports\ARM-Cortex-M3\Generic\RealView-I.\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="526" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\obj\main.o --omf_browse ..\obj\main.crf --depend ..\obj\main.d)
+F (.\main.c)(0x5CAD4FA0)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I ..\USER -I ..\CORE -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\SYSTEM\usart -I ..\STM32F10x_FWLib\inc -I ..\FWLIB\STM32F10x_FWLib\inc -I ..\HARDWARE\LED -I ..\UCOSIII\uC-CPU -I ..\UCOSIII\uC-LIB -I ..\UCOSIII\uCOS-III -I ..\UCOSIII\UCOS_BSP -I ..\UCOSIII\uCOS_CONFIG -I ..\UCOSIII\uCOS-III\Source -I ..\UCOSIII\uC-CPU\ARM-Cortex-M3\RealView -I ..\UCOSIII\uC-LIB\Ports\ARM-Cortex-M3\RealView -I ..\UCOSIII\uCOS-III\Ports\ARM-Cortex-M3\Generic\RealView-I.\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="526" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\obj\main.o --omf_browse ..\obj\main.crf --depend ..\obj\main.d)
 I (..\HARDWARE\LED\task.h)(0x5CAC847B)
 I (..\USER\stm32f10x.h)(0x4D783CB4)
 I (..\CORE\core_cm3.h)(0x4D523B58)
@@ -41,7 +41,7 @@ I (..\SYSTEM\sys\sys.h)(0x5C9AD1AF)
 I (..\SYSTEM\usart\usart.h)(0x5C99984E)
 I (..\HARDWARE\LED\led.h)(0x50513ABC)
 I (..\HARDWARE\LED\adc.h)(0x5C9A1B57)
-I (..\HARDWARE\LED\msg.h)(0x5CAC84BD)
+I (..\HARDWARE\LED\msg1.h)(0x5CAD4FA0)
 I (..\HARDWARE\LED\ADS1118.h)(0x5C984F24)
 I (..\HARDWARE\LED\mtx_sem.h)(0x5CAC6F70)
 I (..\UCOSIII\uCOS_CONFIG\os_app_hooks.h)(0x54589261)
@@ -227,8 +227,8 @@ I (..\UCOSIII\UCOS_BSP\bsp.h)(0x55097DA7)
 I (..\SYSTEM\delay\delay.h)(0x555AC87B)
 I (..\SYSTEM\sys\sys.h)(0x5C9AD1AF)
 I (..\SYSTEM\usart\usart.h)(0x5C99984E)
-F (..\HARDWARE\LED\msg.c)(0x5CAC9589)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I ..\USER -I ..\CORE -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\SYSTEM\usart -I ..\STM32F10x_FWLib\inc -I ..\FWLIB\STM32F10x_FWLib\inc -I ..\HARDWARE\LED -I ..\UCOSIII\uC-CPU -I ..\UCOSIII\uC-LIB -I ..\UCOSIII\uCOS-III -I ..\UCOSIII\UCOS_BSP -I ..\UCOSIII\uCOS_CONFIG -I ..\UCOSIII\uCOS-III\Source -I ..\UCOSIII\uC-CPU\ARM-Cortex-M3\RealView -I ..\UCOSIII\uC-LIB\Ports\ARM-Cortex-M3\RealView -I ..\UCOSIII\uCOS-III\Ports\ARM-Cortex-M3\Generic\RealView-I.\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="526" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\obj\msg.o --omf_browse ..\obj\msg.crf --depend ..\obj\msg.d)
-I (..\HARDWARE\LED\msg.h)(0x5CAC84BD)
+F (..\HARDWARE\LED\msg.c)(0x5CADB29B)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I ..\USER -I ..\CORE -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\SYSTEM\usart -I ..\STM32F10x_FWLib\inc -I ..\FWLIB\STM32F10x_FWLib\inc -I ..\HARDWARE\LED -I ..\UCOSIII\uC-CPU -I ..\UCOSIII\uC-LIB -I ..\UCOSIII\uCOS-III -I ..\UCOSIII\UCOS_BSP -I ..\UCOSIII\uCOS_CONFIG -I ..\UCOSIII\uCOS-III\Source -I ..\UCOSIII\uC-CPU\ARM-Cortex-M3\RealView -I ..\UCOSIII\uC-LIB\Ports\ARM-Cortex-M3\RealView -I ..\UCOSIII\uCOS-III\Ports\ARM-Cortex-M3\Generic\RealView-I.\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="526" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\obj\msg.o --omf_browse ..\obj\msg.crf --depend ..\obj\msg.d)
+I (..\HARDWARE\LED\msg1.h)(0x5CAD4FA0)
 I (..\USER\stm32f10x.h)(0x4D783CB4)
 I (..\CORE\core_cm3.h)(0x4D523B58)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599EDB3E)

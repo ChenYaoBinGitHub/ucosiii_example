@@ -1,5 +1,5 @@
 ..\obj\msg.o: ..\HARDWARE\LED\msg.c
-..\obj\msg.o: ..\HARDWARE\LED\msg.h
+..\obj\msg.o: ..\HARDWARE\LED\msg1.h
 ..\obj\msg.o: ..\USER\stm32f10x.h
 ..\obj\msg.o: ..\CORE\core_cm3.h
 ..\obj\msg.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
