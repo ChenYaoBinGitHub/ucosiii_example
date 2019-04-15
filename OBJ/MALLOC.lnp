@@ -8,6 +8,7 @@
 "..\obj\adc.o"
 "..\obj\mtx_sem.o"
 "..\obj\msg.o"
+"..\obj\event.o"
 "..\obj\delay.o"
 "..\obj\sys.o"
 "..\obj\usart.o"

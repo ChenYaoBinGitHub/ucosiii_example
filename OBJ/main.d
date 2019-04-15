@@ -43,6 +43,7 @@
 ..\obj\main.o: ..\HARDWARE\LED\led.h
 ..\obj\main.o: ..\HARDWARE\LED\adc.h
 ..\obj\main.o: ..\HARDWARE\LED\msg1.h
+..\obj\main.o: ..\HARDWARE\LED\event.h
 ..\obj\main.o: ..\HARDWARE\LED\ADS1118.h
 ..\obj\main.o: ..\HARDWARE\LED\mtx_sem.h
 ..\obj\main.o: ..\UCOSIII\uCOS_CONFIG\os_app_hooks.h
